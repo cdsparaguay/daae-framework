@@ -1,0 +1,30 @@
+# Spring Boot configuration
+spring:
+  profiles:
+    active: development
+# Database
+  datasource:
+    driver-class-name: org.postgresql.Driver
+ #   url: jdbc:postgresql://51.15.53.198:8502/postgres
+    url: jdbc:postgresql://localhost:5432/dengue
+    username: postgres
+    password: postgres
+# JPA properties
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    database: postgresql
+    database-platform: daae.learner.hibernate.CustomPostgreSqlDialect
+    open-in-view: false
+    generate-ddl: false
+# Logger configuration
+logging:
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+  level:
+    org.springframework: INFO
+flyway:
+  enabled: true
+framework-jar-path: ftp://dengue:d3ngu31@51.15.53.198/example-1.0-SNAPSHOT-jar-with-dependencies.jar
+master-url: spark://51.15.53.198:6066
