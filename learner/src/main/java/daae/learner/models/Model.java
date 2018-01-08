@@ -1,11 +1,6 @@
 package daae.learner.models;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
-import java.io.Serializable;
-import java.math.BigInteger;
-import java.util.Map;
 
 @Entity
 public class Model {
@@ -15,8 +10,11 @@ public class Model {
     @SequenceGenerator(name="model_id_seq",sequenceName="model_id_seq", allocationSize=1)
     private Long id;
 
-    @Type(type = "JsonDataUserType")
-    private Map<String, String> model;
+    @Column(name = "model", nullable = false)
+    private byte[] model;
+
+    @Column(name = "class_name", nullable = false)
+    private String className;
 
     @ManyToOne
     @JoinColumn(name = "training_id", nullable = false)
@@ -31,11 +29,11 @@ public class Model {
         this.id = id;
     }
 
-    public Map<String, String> getModel() {
+    public byte[] getModel() {
         return model;
     }
 
-    public void setModel(Map<String, String> model) {
+    public void setModel(byte[] model) {
         this.model = model;
     }
 
@@ -47,4 +45,11 @@ public class Model {
         this.training = trainingId;
     }
 
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
 }

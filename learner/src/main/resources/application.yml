@@ -12,10 +12,10 @@ spring:
 # JPA properties
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     show-sql: true
     database: postgresql
-    database-platform: daae.learner.hibernate.CustomPostgreSqlDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
     generate-ddl: false
 # Logger configuration
@@ -26,5 +26,5 @@ logging:
     org.springframework: INFO
 flyway:
   enabled: true
-framework-jar-path: ftp://dengue:d3ngu31@51.15.53.198/example-1.0-SNAPSHOT-jar-with-dependencies.jar
+framework-jar-path: ftp://dengue:d3ngu31@51.15.53.198/learner-framework-executor-1.0-SNAPSHOT-jar-with-dependencies.jar
 master-url: spark://51.15.53.198:6066

@@ -1,5 +1,8 @@
 package daae.learner.models;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -38,8 +41,10 @@ public class Training {
     @Column(name = "status", nullable = false, length = 50)
     private String status;
     @OneToMany(mappedBy = "training", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<AlgorithmTrainingParameter> parameters;
     @OneToMany(mappedBy = "training", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<TrainingVariable> variables;
 
 
