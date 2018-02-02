@@ -13,7 +13,12 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Properties;
 
@@ -39,7 +44,7 @@ public class JobHandler {
                 String algorithmName = args[1];
                 Trainer trainer = (Trainer) Class.forName(algorithmName).getConstructor().newInstance();
                 ModelDTO model = trainer.train(spark, trainerParams);
-                saveModel(model, spark);
+                saveModel(model);
         }
     }
 
@@ -56,5 +61,26 @@ public class JobHandler {
                 .mode("append")
                 .jdbc(Config.DB_URL,"public.test_model", p);
 
+        }
+
+        private static void saveModel(ModelDTO modelDTO) {
+            URL url = null;
+            try {
+                url = new URL("http://localhost:8080/models/add");
+
+                HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+            out.write(modelDTO.toString());
+            out.close();
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            logger.info("Save successful");
+            } catch (IOException e) {
+                logger.error(e);
+            }
         }
 }

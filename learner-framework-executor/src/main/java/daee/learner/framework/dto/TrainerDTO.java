@@ -7,8 +7,8 @@ public class TrainerDTO {
 
     private List<ParamDTO> params;
     private String dataset;
-    private List<String> covariables;
-    private String target;
+    private List<TrainingVariableDTO> variables;
+    private Long traniningId;
 
     public List<ParamDTO> getParams() {
         return params;
@@ -26,19 +26,19 @@ public class TrainerDTO {
         this.dataset = dataset;
     }
 
-    public List<String> getCovariables() {
-        return covariables;
+    public List<TrainingVariableDTO> getVariables() {
+        return variables;
     }
 
-    public void setCovariables(List<String> covariables) {
-        this.covariables = covariables;
+    public void setVariables(List<TrainingVariableDTO> variables) {
+        this.variables = variables;
     }
 
-    public String getTarget() {
-        return target;
+    public Long getTraniningId() {
+        return traniningId;
     }
 
-    public void setTarget(String target) {
-        this.target = target;
+    public void setTraniningId(Long traniningId) {
+        this.traniningId = traniningId;
     }
 }

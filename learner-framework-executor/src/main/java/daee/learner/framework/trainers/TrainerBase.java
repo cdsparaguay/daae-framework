@@ -1,10 +1,15 @@
 package daee.learner.framework.trainers;
 
 import daee.learner.framework.constants.DataType;
+import daee.learner.framework.dto.ModelDTO;
 import daee.learner.framework.dto.ParamDTO;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
+import org.apache.spark.ml.Model;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -34,5 +39,13 @@ public abstract class TrainerBase<T> {
             default:
                 return param.getValue();
         }
+    }
+    ModelDTO sparkModelToDTO(Model model) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(model);
+        oos.flush();
+        oos.close();
+        return new ModelDTO(baos.toByteArray(), getClass().getName());
     }
 }
