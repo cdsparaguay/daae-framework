@@ -4,8 +4,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -76,17 +74,9 @@ public class Training {
         return startDate;
     }
 
-    public void setStartDate(Timestamp startDate) {
-        this.startDate = startDate;
-    }
-
 
     public Date getEndDate() {
         return endDate;
-    }
-
-    public void setEndDate(Timestamp endDate) {
-        this.endDate = endDate;
     }
 
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequestMapping("/algorithms")
 public class Algorithms {
 
     private final AlgorithmRepository repository;
@@ -20,7 +21,7 @@ public class Algorithms {
         this.repository = repository;
     }
 
-    @RequestMapping(value = "/algorithms", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public List<Algorithm> getAlgorithms(){
         return Lists.newArrayList(repository.findAll());
     }

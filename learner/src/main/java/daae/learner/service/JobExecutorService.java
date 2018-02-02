@@ -5,6 +5,7 @@ import daee.learner.framework.JobHandler;
 import daee.learner.framework.constants.JobType;
 import daee.learner.framework.dto.ParamDTO;
 import daee.learner.framework.dto.TrainerDTO;
+import daee.learner.framework.trainers.MultiLayerDLF4;
 import org.apache.spark.launcher.SparkLauncher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,7 @@ public class JobExecutorService {
                     .setAppResource(JAR_PATH)
                     .addFile("ftp://dengue:d3ngu31@51.15.53.198/sample_multiclass_classification_data.txt")
                     .setMainClass(JobHandler.class.getName())
-                    .addAppArgs(JobType.TRAINING, "daee.learner.framework.trainers.MultilayerPerceptronClassifierTrainer", jsonString)
+                    .addAppArgs(JobType.TRAINING, MultiLayerDLF4.class.getName(), jsonString)
                     .setMaster(MASTER)
                     .setAppName("EXAMPLE")
                     .setDeployMode("cluster")

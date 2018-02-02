@@ -1,5 +1,7 @@
 package daae.learner.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigInteger;
 
@@ -14,12 +16,20 @@ public class ModelVariable {
 
     @ManyToOne
     @JoinColumn(name = "model_id", nullable = false)
+    @JsonIgnore
     private Model model;
 
     @ManyToOne
     @JoinColumn(name = "training_variable_id", nullable = false)
     private TrainingVariable trainingVariable;
 
+    public ModelVariable(Model model, TrainingVariable trainingVariable) {
+        this.model = model;
+        this.trainingVariable = trainingVariable;
+    }
+
+    public ModelVariable() {
+    }
 
     public Long getId() {
         return id;

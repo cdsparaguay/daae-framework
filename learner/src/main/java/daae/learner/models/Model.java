@@ -1,6 +1,7 @@
 package daae.learner.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Model {
@@ -19,6 +20,9 @@ public class Model {
     @ManyToOne
     @JoinColumn(name = "training_id", nullable = false)
     private Training training;
+
+    @OneToMany(mappedBy = "model", fetch = FetchType.EAGER)
+    private List<ModelVariable> modelVariables;
 
 
     public Long getId() {
@@ -41,8 +45,8 @@ public class Model {
         return training;
     }
 
-    public void setTraining(Training trainingId) {
-        this.training = trainingId;
+    public void setTraining(Training training) {
+        this.training = training;
     }
 
     public String getClassName() {
@@ -51,5 +55,13 @@ public class Model {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public List<ModelVariable> getModelVariables() {
+        return modelVariables;
+    }
+
+    public void setModelVariables(List<ModelVariable> modelVariables) {
+        this.modelVariables = modelVariables;
     }
 }
