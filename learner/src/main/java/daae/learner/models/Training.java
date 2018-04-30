@@ -44,6 +44,9 @@ public class Training {
     @OneToMany(mappedBy = "training", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<TrainingVariable> variables;
+    @OneToMany(mappedBy = "training", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<ValidationValue> validationValues;
 
 
     public Long getId() {
@@ -137,5 +140,13 @@ public class Training {
 
     public void setVariables(List<TrainingVariable> variables) {
         this.variables = variables;
+    }
+
+    public List<ValidationValue> getValidationValues() {
+        return validationValues;
+    }
+
+    public void setValidationValues(List<ValidationValue> validationValues) {
+        this.validationValues = validationValues;
     }
 }

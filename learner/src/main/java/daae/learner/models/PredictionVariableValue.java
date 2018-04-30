@@ -1,5 +1,7 @@
 package daae.learner.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigInteger;
 
@@ -19,6 +21,7 @@ public class PredictionVariableValue {
     private ModelVariable modelVariable;
     @ManyToOne
     @JoinColumn(name = "prediction_id", nullable = false)
+    @JsonIgnore
     private Prediction prediction;
 
 

@@ -1,5 +1,7 @@
 package daae.learner.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigInteger;
 
@@ -19,6 +21,7 @@ public class NormalizationParameter {
     private String fieldName;
     @ManyToOne
     @JoinColumn(name = "procedure_id", nullable = false)
+    @JsonIgnore
     private Procedure procedure;
 
 

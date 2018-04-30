@@ -1,5 +1,7 @@
 package daae.learner.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigInteger;
 
@@ -18,6 +20,7 @@ public class EvaluationValue {
 
     @ManyToOne
     @JoinColumn(name="model_id")
+    @JsonIgnore
     private Model model;
 
     @ManyToOne

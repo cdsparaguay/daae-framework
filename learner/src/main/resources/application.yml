@@ -6,7 +6,7 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
  #   url: jdbc:postgresql://51.15.53.198:8502/postgres
-    url: jdbc:postgresql://localhost:5432/dengue
+    url: jdbc:postgresql://db/dengue
     username: postgres
     password: postgres
 # JPA properties
@@ -28,3 +28,7 @@ flyway:
   enabled: true
 framework-jar-path: ftp://dengue:d3ngu31@51.15.53.198/learner-framework-executor-1.0-SNAPSHOT-jar-with-dependencies.jar
 master-url: spark://51.15.53.198:6066
+#server.address:
+#  192.168.1.102
+server.port:
+  8080

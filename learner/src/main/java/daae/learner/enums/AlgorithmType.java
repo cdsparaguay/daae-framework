@@ -3,5 +3,9 @@ package daae.learner.enums;
 public enum AlgorithmType {
     CLASSIFICATION,
     REGRESSION,
-    CLUSTERING
+    CLUSTERING,
+    CLASSIFICATION_REGRESSION,
+    CLASSIFICATION_CLUSTERING,
+    REGRESSION_CLUSTERING
+
 }

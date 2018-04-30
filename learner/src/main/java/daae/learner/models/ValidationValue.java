@@ -1,5 +1,7 @@
 package daae.learner.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigInteger;
 
@@ -15,10 +17,11 @@ public class ValidationValue {
     @Column(name = "k", nullable = false)
     private Integer k;
     @Basic
-    @Column(name = "train", nullable = true, precision = 0)
+    @Column(name = "train")
     private Double train;
     @ManyToOne
     @JoinColumn(name = "training_id", nullable = false)
+    @JsonIgnore
     private Training training;
     @ManyToOne
     @JoinColumn(name = "procedure_id", nullable = false)

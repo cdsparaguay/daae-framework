@@ -1,5 +1,9 @@
 package daae.learner.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -19,10 +23,15 @@ public class Model {
 
     @ManyToOne
     @JoinColumn(name = "training_id", nullable = false)
+    @JsonIgnore
     private Training training;
 
     @OneToMany(mappedBy = "model", fetch = FetchType.EAGER)
     private List<ModelVariable> modelVariables;
+
+    @OneToMany(mappedBy = "model", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<EvaluationValue> evaluationValues;
 
 
     public Long getId() {
@@ -63,5 +72,13 @@ public class Model {
 
     public void setModelVariables(List<ModelVariable> modelVariables) {
         this.modelVariables = modelVariables;
+    }
+
+    public List<EvaluationValue> getEvaluationValues() {
+        return evaluationValues;
+    }
+
+    public void setEvaluationValues(List<EvaluationValue> evaluationValues) {
+        this.evaluationValues = evaluationValues;
     }
 }

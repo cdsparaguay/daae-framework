@@ -1,5 +1,7 @@
 package daae.learner.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -16,8 +18,9 @@ public class NormalizationParameterValue {
     private BigDecimal value;
     @ManyToOne
     @JoinColumn(name = "normalization_parameter_id", nullable = false)
+    @JsonIgnore
     private NormalizationParameter normalizationParameter;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "training_variable_id", nullable = false)
     private TrainingVariable trainingVariable;
 

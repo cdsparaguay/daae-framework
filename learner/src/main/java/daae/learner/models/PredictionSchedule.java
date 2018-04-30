@@ -1,8 +1,9 @@
 package daae.learner.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
-import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -12,6 +13,7 @@ public class PredictionSchedule {
     @Column(name = "id", nullable = false, columnDefinition = "SERIAL")
     @GeneratedValue(generator="prediction_schedule_id_seq")
     @SequenceGenerator(name="prediction_schedule_id_seq",sequenceName="prediction_schedule_id_seq", allocationSize=1)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
     @Basic
     @Column(name = "user_id", nullable = false)
@@ -20,10 +22,11 @@ public class PredictionSchedule {
     @Column(name = "start_date", nullable = false)
     private Date startDate;
     @Basic
-    @Column(name = "end_date", nullable = true)
+    @Column(name = "end_date")
     private Date endDate;
     @Basic
     @Column(name = "status", nullable = false, length = 50)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String status;
     @Basic
     @Column(name = "period_days", nullable = false)
@@ -33,6 +36,7 @@ public class PredictionSchedule {
     private Date time;
     @ManyToOne
     @JoinColumn(name = "model_id", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Model model;
 
 
@@ -95,12 +99,11 @@ public class PredictionSchedule {
         this.time = time;
     }
 
-
-    public Model getModelId() {
+    public Model getModel() {
         return model;
     }
 
-    public void setModelId(Model model) {
+    public void setModel(Model model) {
         this.model = model;
     }
 

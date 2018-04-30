@@ -1,6 +1,6 @@
 package daae.learner.enums;
 
-public enum MethodType {
+public enum ProcedureTarget {
     EVALUATION,
     NORMALIZATION,
     VALIDATION

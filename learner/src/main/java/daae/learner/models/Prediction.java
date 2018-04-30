@@ -1,9 +1,13 @@
 package daae.learner.models;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Prediction {
@@ -24,6 +28,10 @@ public class Prediction {
     @Basic
     @Column(name = "for_date", nullable = false)
     private Timestamp forDate;
+
+    @OneToMany(mappedBy = "prediction", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<PredictionVariableValue> variableValues;
 
 
     public Long getId() {
@@ -66,4 +74,11 @@ public class Prediction {
         this.forDate = forDate;
     }
 
+    public List<PredictionVariableValue> getVariableValues() {
+        return variableValues;
+    }
+
+    public void setVariableValues(List<PredictionVariableValue> variableValues) {
+        this.variableValues = variableValues;
+    }
 }

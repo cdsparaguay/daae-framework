@@ -26,6 +26,8 @@ public class TrainingVariable {
     @Basic
     @Column(name = "data_type", nullable = false, length = 50)
     private String dataType;
+    @OneToOne(mappedBy="trainingVariable")
+    private NormalizationParameterValue normalizationParameterValue;
 
     public Long getId() {
         return id;
@@ -65,5 +67,13 @@ public class TrainingVariable {
 
     public void setDataType(String dataType) {
         this.dataType = dataType;
+    }
+
+    public NormalizationParameterValue getNormalizationParameterValue() {
+        return normalizationParameterValue;
+    }
+
+    public void setNormalizationParameterValue(NormalizationParameterValue normalizationParameterValue) {
+        this.normalizationParameterValue = normalizationParameterValue;
     }
 }
