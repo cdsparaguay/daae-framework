@@ -1,5 +1,7 @@
 package daee.learner.framework.dto;
 
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +11,7 @@ public class TrainerDTO {
     private String dataset;
     private List<TrainingVariableDTO> variables;
     private Long traniningId;
+    private URL dataUrl;
 
     public List<ParamDTO> getParams() {
         return params;
@@ -40,5 +43,33 @@ public class TrainerDTO {
 
     public void setTraniningId(Long traniningId) {
         this.traniningId = traniningId;
+    }
+
+    public String[] getTargetVariablesName() {
+        List<String> toRet = new ArrayList<>();
+        for (TrainingVariableDTO trainingVariableDTO: this.getVariables()) {
+            if(trainingVariableDTO.getTarget()) {
+                toRet.add(trainingVariableDTO.getName());
+            }
+        }
+        return toRet.toArray(new String[0]);
+    }
+
+    public String[] getFeatureVariablesName() {
+        List<String> toRet = new ArrayList<>();
+        for (TrainingVariableDTO trainingVariableDTO: this.getVariables()) {
+            if(!trainingVariableDTO.getTarget()) {
+                toRet.add(trainingVariableDTO.getName());
+            }
+        }
+        return toRet.toArray(new String[0]);
+    }
+
+    public URL getDataUrl() {
+        return dataUrl;
+    }
+
+    public void setDataUrl(URL dataUrl) {
+        this.dataUrl = dataUrl;
     }
 }

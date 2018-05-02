@@ -34,6 +34,8 @@ public class JobHandler {
         String type = args[0];
         SparkSession spark = SparkSession
                 .builder()
+                .config("spark.files.useFetchCache", false)
+                .config("spark.files.overwrite", true)
                 .appName("JobHandler")
                 .getOrCreate();
         switch (type) {
