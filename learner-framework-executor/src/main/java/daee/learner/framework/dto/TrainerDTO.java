@@ -1,5 +1,7 @@
 package daee.learner.framework.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,7 @@ public class TrainerDTO {
     private String dataset;
     private List<TrainingVariableDTO> variables;
     private Long traniningId;
-    private URL dataUrl;
+    private String dataUrl;
 
     public List<ParamDTO> getParams() {
         return params;
@@ -45,6 +47,7 @@ public class TrainerDTO {
         this.traniningId = traniningId;
     }
 
+    @JsonIgnore
     public String[] getTargetVariablesName() {
         List<String> toRet = new ArrayList<>();
         for (TrainingVariableDTO trainingVariableDTO: this.getVariables()) {
@@ -55,6 +58,7 @@ public class TrainerDTO {
         return toRet.toArray(new String[0]);
     }
 
+    @JsonIgnore
     public String[] getFeatureVariablesName() {
         List<String> toRet = new ArrayList<>();
         for (TrainingVariableDTO trainingVariableDTO: this.getVariables()) {
@@ -65,11 +69,11 @@ public class TrainerDTO {
         return toRet.toArray(new String[0]);
     }
 
-    public URL getDataUrl() {
+    public String getDataUrl() {
         return dataUrl;
     }
 
-    public void setDataUrl(URL dataUrl) {
+    public void setDataUrl(String dataUrl) {
         this.dataUrl = dataUrl;
     }
 }

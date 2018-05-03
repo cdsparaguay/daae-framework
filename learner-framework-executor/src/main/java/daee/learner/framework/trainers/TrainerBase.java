@@ -61,7 +61,7 @@ public abstract class TrainerBase<T> {
         return new ModelDTO(baos.toByteArray(), getClass().getName());
     }
 
-    private String getAndSaveJson(String datasetcode, URL url, SparkSession sparkSession) throws IOException {
+    private String getAndSaveJson(String datasetcode, String url, SparkSession sparkSession) throws IOException {
         List<String> listToSave = new ArrayList<>();
         String fileName = datasetcode + ".json";
         listToSave.add(MapperHelper.readJsonFromUrl(url).toString());
