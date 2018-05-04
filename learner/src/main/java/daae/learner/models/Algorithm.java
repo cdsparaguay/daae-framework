@@ -37,7 +37,7 @@ public class Algorithm {
     @Column(name = "type", nullable = false, length = 50)
     private String type;
 
-    @OneToMany(mappedBy = "algorithm", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "algorithm", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<AlgorithmParameter> parameters;
 
 
