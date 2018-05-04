@@ -15,7 +15,6 @@ public class AlgorithmParameter {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="algorithm_id")
     @JsonIgnore
     private Algorithm algorithm;
 

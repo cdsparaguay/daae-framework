@@ -3,6 +3,7 @@ package daae.learner.rest;
 import com.google.common.collect.Lists;
 import daae.learner.enums.AlgorithmType;
 import daae.learner.models.Algorithm;
+import daae.learner.models.AlgorithmParameter;
 import daae.learner.repository.AlgorithmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -38,6 +39,9 @@ public class Algorithms {
             AlgorithmType.valueOf(algorithm.getType()).name();
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid type parameter");
+        }
+        for(AlgorithmParameter parameter: algorithm.getParameters()) {
+            parameter.setAlgorithm(algorithm);
         }
         return repository.save(algorithm);
     }
