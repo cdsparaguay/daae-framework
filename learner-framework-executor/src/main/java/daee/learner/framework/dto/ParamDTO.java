@@ -12,6 +12,9 @@ public class ParamDTO {
         this.dataType = dataType;
     }
 
+    public ParamDTO() {
+    }
+
     public String getMethod() {
         return method;
     }
