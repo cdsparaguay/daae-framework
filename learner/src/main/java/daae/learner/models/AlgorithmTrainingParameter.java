@@ -1,5 +1,7 @@
 package daae.learner.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigInteger;
 
@@ -20,6 +22,7 @@ public class AlgorithmTrainingParameter {
 
     @ManyToOne
     @JoinColumn(name="training_id")
+    @JsonIgnore
     private Training training;
     @Basic
     @Column(name = "default_value", length = 50)
