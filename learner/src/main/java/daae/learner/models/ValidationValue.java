@@ -52,11 +52,11 @@ public class ValidationValue {
         this.train = train;
     }
 
-    public Training getTrainingId() {
+    public Training getTraining() {
         return training;
     }
 
-    public void setTrainingId(Training training) {
+    public void setTraining(Training training) {
         this.training = training;
     }
 
