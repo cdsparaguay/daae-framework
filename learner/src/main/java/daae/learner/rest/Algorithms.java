@@ -49,12 +49,18 @@ public class Algorithms {
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON)
     public Algorithm update(@RequestBody Algorithm algorithm){
         repository.findById(algorithm.getId()).orElseThrow(() -> new ResourceNotFoundException("Algorithm doesn't exists"));
+        for(AlgorithmParameter parameter: algorithm.getParameters()) {
+            parameter.setAlgorithm(algorithm);
+        }
         return repository.save(algorithm);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "{algorithmId}")
     public void delete(@PathVariable("algorithmId") Long algorithmId){
         Algorithm algorithm = repository.findById(algorithmId).orElseThrow(() -> new ResourceNotFoundException("Algorithm doesn't exists"));
+        for(AlgorithmParameter parameter: algorithm.getParameters()) {
+            parameter.setAlgorithm(algorithm);
+        }
         repository.delete(algorithm);
     }
 
