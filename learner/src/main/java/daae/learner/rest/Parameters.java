@@ -7,10 +7,12 @@ import daae.learner.repository.ParameterRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/parameters")
@@ -18,9 +20,12 @@ import java.util.List;
 public class Parameters {
     private final ParameterRepository repository;
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    public Parameters(ParameterRepository repository) {
+    public Parameters(ParameterRepository repository, JdbcTemplate jdbcTemplate) {
         this.repository = repository;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON, path = "/domain/{domain}")
@@ -33,5 +38,11 @@ public class Parameters {
             throw new IllegalArgumentException("Invalid domain parameter");
         }
     }
+
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON, path = "/reporte/{anio}")
+    public List<Map<String, Object>> getReporteTemp(@PathVariable("anio") Integer anio) {
+        return jdbcTemplate.queryForList("SELECT * FROM reporte where anio = '" + anio.toString()+"'");
+    }
+
 
 }
