@@ -12,8 +12,21 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+/**
+ * Interfaz fase para la implementación de algoritmos de entrenamiento
+ */
 public interface Trainer {
 
+    /**
+     * Método principal a implementar. Debe realizar el entrenamiento dado los parámetros recibidos en un
+     * {@link TrainerDTO} y retornar un {@link ModelDTO} entrenado listo para ser persistido.
+     * @param sparkSession:
+     *                    Sesión spark en la cual se están realizado las tareas de entrenamiento
+     * @param trainerDTO:
+     *                  Parámetros a utilizar por el algoritmo de entrenamiento
+     * @return ModelDTO
+     * @throws IOException
+     */
     ModelDTO train(SparkSession sparkSession, TrainerDTO trainerDTO) throws IOException;
 
 }

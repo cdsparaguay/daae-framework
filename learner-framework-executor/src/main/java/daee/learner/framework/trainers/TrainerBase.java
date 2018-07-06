@@ -15,18 +15,31 @@ import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase Base a extender para crear un nuevo algoritmo de Entrenamiento.
+ * Posee implementaciones útiles a utilizar al realizar un entrenamiento.
+ * @param <T>
+ */
 public abstract class TrainerBase<T> {
 
     Logger logger = Logger.getLogger(Trainer.class);
 
+    /**
+     * Método utilizado para setear al algoritmo a utilizar para el entramiento
+     * los hiperparḿetros correspondientes, utilizando Reflection. Los nombres
+     * de atributos se deben corresponder con los nombres de los atributos de la
+     * clase a la que se le seterán los valores de hiperparámetros.
+     * @param object:
+     *              Objeto que representa el algoritmo de entrenamiento al que se le quieren setear los valores de
+     *              parámetros
+     * @param attributes:
+     *                  Los atributos con los valores para setear los parámetros.
+     */
     void setValues(T object, List<ParamDTO> attributes) {
         for(ParamDTO param: attributes) {
             set(object, param);
@@ -52,14 +65,15 @@ public abstract class TrainerBase<T> {
         }
     }
 
-    ModelDTO sparkModelToDTO(Model model) throws IOException {
+    ModelDTO sparkModelToDTO(Model model, String className) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(model);
         oos.flush();
         oos.close();
-        return new ModelDTO(baos.toByteArray(), getClass().getName());
+        return new ModelDTO(baos.toByteArray(), className);
     }
+
 
     private String getAndSaveJson(String datasetcode, String url, SparkSession sparkSession) throws IOException {
         List<String> listToSave = new ArrayList<>();
@@ -75,7 +89,11 @@ public abstract class TrainerBase<T> {
 
         String fileName = getAndSaveJson(trainerDTO.getDataset(), trainerDTO.getDataUrl(), sparkSession);
         Dataset<Row> data = sparkSession.read().json(fileName);
-
+        data.persist();
+        data = data.select("value");
+        for(String schem: data.schema().fieldNames()) {
+            logger.info("FIELD: " + schem);
+        }
         return new VectorAssembler()
                 .setOutputCol("features")
                 .setInputCols(trainerDTO.getFeatureVariablesName())

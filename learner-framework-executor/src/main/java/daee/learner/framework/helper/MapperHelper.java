@@ -1,15 +1,11 @@
 package daee.learner.framework.helper;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MapperHelper {
 
@@ -30,11 +26,11 @@ public class MapperHelper {
         return sb.toString();
     }
 
-    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+    public static JSONArray readJsonFromUrl(String url) throws IOException, JSONException {
         try (InputStream is =  new URL(url).openStream()) {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             String jsonText = readAll(rd);
-            return new JSONObject(jsonText);
+            return new JSONArray(jsonText);
         }
     }
 
