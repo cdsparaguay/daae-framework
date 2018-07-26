@@ -29,9 +29,6 @@ public class Procedure {
     @Basic
     @Column(name = "type", nullable = false, length = 50)
     private String type;
-    @OneToMany(mappedBy = "procedure", fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    private List<NormalizationParameter> normalizationParameters;
 
 
     public Long getId() {
@@ -82,11 +79,4 @@ public class Procedure {
         this.type = type;
     }
 
-    public List<NormalizationParameter> getNormalizationParameters() {
-        return normalizationParameters;
-    }
-
-    public void setNormalizationParameters(List<NormalizationParameter> normalizationParameters) {
-        this.normalizationParameters = normalizationParameters;
-    }
 }

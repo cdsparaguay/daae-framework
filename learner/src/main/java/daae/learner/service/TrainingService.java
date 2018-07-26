@@ -1,7 +1,9 @@
 package daae.learner.service;
 
+import daae.learner.enums.AlgorithmType;
 import daae.learner.enums.TrainingStatus;
-import daae.learner.models.Training;
+import daae.learner.exceptions.PersistenceException;
+import daae.learner.models.*;
 import daae.learner.repository.TrainingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,42 @@ public class TrainingService {
         training.setEndDate(new Date());
         return repository.save(training);
     }
+
+
+    public Training save (Training training) throws PersistenceException {
+
+        boolean hasTarget = false;
+        training.setStatus(TrainingStatus.NEW.name());
+        if(training.getParameters().isEmpty()) {
+            throw new PersistenceException("Training cannot have empty parameters");
+        }
+
+        for(AlgorithmTrainingParameter parameter: training.getParameters()) {
+            parameter.setTraining(training);
+        }
+
+        if(training.getVariables().size() < 2) {
+            throw new PersistenceException("Training must have at least two variables");
+        }
+
+        for(TrainingVariable trainingVariable: training.getVariables()) {
+            trainingVariable.setTraining(training);
+            if(trainingVariable.getTarget()) {
+                hasTarget= true;
+            }
+        }
+
+        for(ValidationValue validationValue: training.getValidationValues()) {
+            validationValue.setTraining(training);
+        }
+
+        if(!hasTarget) {
+            throw new PersistenceException("Training must have at least one target variables");
+        }
+
+        return repository.save(training);
+    }
+
 
     public TrainingRepository getRepository() {
         return repository;

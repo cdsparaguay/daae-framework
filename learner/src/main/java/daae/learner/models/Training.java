@@ -41,13 +41,13 @@ public class Training {
     @Basic
     @Column(name = "status", nullable = false, length = 50)
     private String status;
-    @OneToMany(mappedBy = "training", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "training", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<AlgorithmTrainingParameter> parameters;
-    @OneToMany(mappedBy = "training", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "training", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<TrainingVariable> variables;
-    @OneToMany(mappedBy = "training", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "training", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<ValidationValue> validationValues;
 

@@ -23,7 +23,7 @@ public class ValidationValue {
     @JoinColumn(name = "training_id", nullable = false)
     @JsonIgnore
     private Training training;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "procedure_id", nullable = false)
     private Procedure procedure;
 

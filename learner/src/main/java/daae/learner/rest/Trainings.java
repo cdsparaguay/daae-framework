@@ -2,6 +2,7 @@ package daae.learner.rest;
 
 import com.google.common.collect.Lists;
 import daae.learner.enums.TrainingStatus;
+import daae.learner.exceptions.PersistenceException;
 import daae.learner.models.Algorithm;
 import daae.learner.models.Training;
 import daae.learner.service.TrainingService;
@@ -44,9 +45,9 @@ public class Trainings {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
-    public Training save(@RequestBody Training training){
-        training.setStatus(TrainingStatus.NEW.name());
-        return service.getRepository().save(training);
+    public Training save(@RequestBody Training training) throws PersistenceException {
+
+        return service.save(training);
     }
 
 }

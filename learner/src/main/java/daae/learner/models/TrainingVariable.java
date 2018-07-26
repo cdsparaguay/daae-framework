@@ -13,7 +13,7 @@ public class TrainingVariable {
     @GeneratedValue(generator="training_variable_id_seq")
     @SequenceGenerator(name="training_variable_id_seq",sequenceName="training_variable_id_seq", allocationSize=1)
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "training_id", nullable = false)
     @JsonIgnore
     private Training training;
@@ -26,8 +26,6 @@ public class TrainingVariable {
     @Basic
     @Column(name = "data_type", nullable = false, length = 50)
     private String dataType;
-    @OneToOne(mappedBy="trainingVariable")
-    private NormalizationParameterValue normalizationParameterValue;
 
     public Long getId() {
         return id;
@@ -69,11 +67,4 @@ public class TrainingVariable {
         this.dataType = dataType;
     }
 
-    public NormalizationParameterValue getNormalizationParameterValue() {
-        return normalizationParameterValue;
-    }
-
-    public void setNormalizationParameterValue(NormalizationParameterValue normalizationParameterValue) {
-        this.normalizationParameterValue = normalizationParameterValue;
-    }
 }
