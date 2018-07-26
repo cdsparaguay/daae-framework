@@ -28,9 +28,6 @@ public class Algorithm {
     @Column(name = "viewer", nullable = false)
     private Boolean viewer;
     @Basic
-    @Column(name = "norm", nullable = false)
-    private Boolean norm;
-    @Basic
     @Column(name = "status", nullable = false, length = 50)
     private String status;
     @Basic
@@ -84,14 +81,6 @@ public class Algorithm {
         this.viewer = viewer;
     }
 
-
-    public Boolean getNorm() {
-        return norm;
-    }
-
-    public void setNorm(Boolean norm) {
-        this.norm = norm;
-    }
 
     public String getStatus() {
         return status;
