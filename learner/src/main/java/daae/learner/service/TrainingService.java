@@ -1,10 +1,10 @@
 package daae.learner.service;
 
-import daae.learner.enums.AlgorithmType;
 import daae.learner.enums.TrainingStatus;
 import daae.learner.exceptions.PersistenceException;
 import daae.learner.models.*;
 import daae.learner.repository.TrainingRepository;
+import daee.learner.framework.dto.TrainerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +13,15 @@ import java.util.List;
 
 @Service
 public class TrainingService {
+
     private final TrainingRepository repository;
 
-
+    private final JobExecutorService jobExecutorService;
 
     @Autowired
-    public TrainingService(TrainingRepository repository) {
+    public TrainingService(TrainingRepository repository, JobExecutorService jobExecutorService) {
         this.repository = repository;
+        this.jobExecutorService = jobExecutorService;
     }
 
     public List<Training> getByStatus(TrainingStatus status) {
@@ -64,7 +66,12 @@ public class TrainingService {
             throw new PersistenceException("Training must have at least one target variables");
         }
 
-        return repository.save(training);
+        Training trainingSave = repository.save(training);
+        TrainerDTO trainerDTO = trainingSave.toTrainingDTO();
+
+        jobExecutorService.addJob(trainerDTO);
+
+        return trainingSave;
     }
 
 

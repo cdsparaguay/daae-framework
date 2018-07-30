@@ -1,6 +1,7 @@
 package daae.learner.service;
 
 import com.google.gson.Gson;
+import daae.learner.models.Training;
 import daee.learner.framework.JobHandler;
 import daee.learner.framework.constants.JobType;
 import daee.learner.framework.dto.ParamDTO;

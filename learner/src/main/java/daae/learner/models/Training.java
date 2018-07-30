@@ -1,10 +1,14 @@
 package daae.learner.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import daee.learner.framework.dto.ParamDTO;
+import daee.learner.framework.dto.TrainerDTO;
+import daee.learner.framework.dto.TrainingVariableDTO;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -151,5 +155,26 @@ public class Training {
 
     public void setValidationValues(List<ValidationValue> validationValues) {
         this.validationValues = validationValues;
+    }
+
+    public TrainerDTO toTrainingDTO () {
+
+        TrainerDTO trainerDTO = new TrainerDTO();
+        trainerDTO.setDataset(this.datasetCode);
+        trainerDTO.setDataUrl("");
+        trainerDTO.setTraniningId(this.id);
+        trainerDTO.setParams(new ArrayList<>());
+        for(AlgorithmTrainingParameter parameter: this.getParameters()) {
+            trainerDTO.getParams().add(new ParamDTO(parameter.getFieldName(), parameter.getValue(),
+                                parameter.getDataType()));
+        }
+        trainerDTO.setVariables(new ArrayList<>());
+        for(TrainingVariable variable: this.getVariables()) {
+            trainerDTO.getVariables().add(new TrainingVariableDTO(variable.getName(), variable.getId(),
+                    variable.getTarget()));
+        }
+
+        return trainerDTO;
+
     }
 }

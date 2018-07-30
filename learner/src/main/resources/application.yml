@@ -33,3 +33,4 @@ master-url: spark://51.15.53.198:6066
 #  192.168.1.102
 server.port:
   8080
+datasource-url:
