@@ -28,9 +28,11 @@ public class ModelDTO implements Serializable{
         this.class_name = className;
     }
 
-    public ModelDTO(byte[] model, String class_name) {
+    public ModelDTO(byte[] model, String class_name, Long training_id, List<TrainingVariableDTO> variables) {
         this.model = model;
         this.class_name = class_name;
+        this.training_id =training_id;
+        this.variables = variables;
     }
 
     public ModelDTO() {

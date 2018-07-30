@@ -5,6 +5,7 @@ import daee.learner.framework.constants.DataType;
 import daee.learner.framework.dto.ModelDTO;
 import daee.learner.framework.dto.ParamDTO;
 import daee.learner.framework.dto.TrainerDTO;
+import daee.learner.framework.dto.TrainingVariableDTO;
 import daee.learner.framework.helper.MapperHelper;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
@@ -65,13 +66,13 @@ public abstract class TrainerBase<T> {
         }
     }
 
-    ModelDTO sparkModelToDTO(Model model, String className) throws IOException {
+    ModelDTO sparkModelToDTO(Model model, String className, Long training_id, List<TrainingVariableDTO> variables) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(model);
         oos.flush();
         oos.close();
-        return new ModelDTO(baos.toByteArray(), className);
+        return new ModelDTO(baos.toByteArray(), className, training_id, variables);
     }
 
 
@@ -95,7 +96,7 @@ public abstract class TrainerBase<T> {
             logger.info("FIELD: " + schem);
         }
         return new VectorAssembler()
-                .setOutputCol("features")
+                .setOutputCol(trainerDTO.getTargetVariablesName()[0])
                 .setInputCols(trainerDTO.getFeatureVariablesName())
                 .transform(data);
 

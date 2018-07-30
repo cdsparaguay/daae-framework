@@ -6,6 +6,12 @@ public class TrainingVariableDTO {
     private Long id;
     private Boolean target;
 
+    public TrainingVariableDTO(String name, Long id, Boolean target) {
+        this.name = name;
+        this.id = id;
+        this.target = target;
+    }
+
     public String getName() {
         return name;
     }

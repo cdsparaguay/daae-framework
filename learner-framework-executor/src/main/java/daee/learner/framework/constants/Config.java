@@ -13,6 +13,7 @@ public class Config {
     public static final String DB_USER =  properties.getProperty("dbusername");
     public static final String DB_PASS =  properties.getProperty("dbpassword");
     public static final String HDFS_PATH =  properties.getProperty("hdfs-url");
+    public static final String SERVICE_URL =  properties.getProperty("service-url");
 
     private static Properties readPropertiesFile()
     {

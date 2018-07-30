@@ -66,9 +66,9 @@ public class JobHandler {
         }
 
         private static void saveModel(ModelDTO modelDTO) {
-            URL url = null;
+            URL url;
             try {
-                url = new URL("http://localhost:8080/models/add");
+                url = new URL(Config.SERVICE_URL+"models/add");
 
                 HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             connection.setDoOutput(true);

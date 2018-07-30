@@ -2,6 +2,7 @@ package daee.learner.framework.trainers;
 
 import daee.learner.framework.dto.ModelDTO;
 import daee.learner.framework.dto.TrainerDTO;
+import daee.learner.framework.models.DecisionTreeRegressionSparkModel;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.ml.classification.MultilayerPerceptronClassifier;
 import org.apache.spark.ml.evaluation.RegressionEvaluator;
@@ -11,6 +12,7 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
+import javax.management.MalformedObjectNameException;
 import java.io.IOException;
 
 public class DecisionTreeTrainer extends TrainerBase<MultilayerPerceptronClassifier>
@@ -24,7 +26,7 @@ public class DecisionTreeTrainer extends TrainerBase<MultilayerPerceptronClassif
         Dataset<Row> trainingData = splits[0];
         Dataset<Row> testData = splits[1];
         DecisionTreeRegressor dt = new DecisionTreeRegressor()
-                .setFeaturesCol("features");
+                .setFeaturesCol(trainerDTO.getTargetVariablesName()[0]);
         DecisionTreeRegressionModel model = dt.train(trainingData);
         // Make predictions.
         Dataset<Row> predictions = model.transform(testData);
@@ -39,6 +41,7 @@ public class DecisionTreeTrainer extends TrainerBase<MultilayerPerceptronClassif
 
         logger.info("Learned regression tree model:\n" + model.toDebugString());
 
-        return new ModelDTO();
+        return sparkModelToDTO(model, DecisionTreeRegressionSparkModel.class.getName(),
+                trainerDTO.getTraniningId(), trainerDTO.getVariables());
     }
 }
