@@ -3,6 +3,7 @@ package daee.learner.framework.models;
 import daee.learner.framework.dto.ModelDTO;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
 
 /**
  * Interfaz a implementar para crear un nuevo Modelo de Predicción
@@ -14,8 +15,7 @@ public interface Model {
      * de entrada en un {@link Dataset<Row>} y retorna un {@link Dataset<Row>} con los resultados
      * de la predicción.
      * @param model
-     * @param data
      * @return
      */
-    Dataset<Row> predict(ModelDTO model, Dataset<Row> data);
+    Dataset<Row> predict(SparkSession session, ModelDTO model, String dataSetName, String dataSetUrl);
 }

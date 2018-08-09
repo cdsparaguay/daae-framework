@@ -21,6 +21,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static daee.learner.framework.helper.MapperHelper.getAndSaveJson;
+
 /**
  * Clase Base a extender para crear un nuevo algoritmo de Entrenamiento.
  * Posee implementaciones útiles a utilizar al realizar un entrenamiento.
@@ -75,26 +77,12 @@ public abstract class TrainerBase<T> {
         return new ModelDTO(baos.toByteArray(), className, training_id, variables);
     }
 
-
-    private String getAndSaveJson(String datasetcode, String url, SparkSession sparkSession) throws IOException {
-        List<String> listToSave = new ArrayList<>();
-        String fileName = datasetcode + ".json";
-        listToSave.add(MapperHelper.readJsonFromUrl(url).toString());
-        Dataset<String> toSave = sparkSession.createDataset(listToSave, Encoders.STRING());
-        toSave.write().format("json").mode("overwrite").save(Config.HDFS_PATH+fileName);
-        return Config.HDFS_PATH+fileName;
-
-    }
-
     Dataset<Row> getData(SparkSession sparkSession, TrainerDTO trainerDTO) throws IOException {
 
         String fileName = getAndSaveJson(trainerDTO.getDataset(), trainerDTO.getDataUrl(), sparkSession);
         Dataset<Row> data = sparkSession.read().json(fileName);
         data.persist();
         data = data.select("value");
-        for(String schem: data.schema().fieldNames()) {
-            logger.info("FIELD: " + schem);
-        }
         return new VectorAssembler()
                 .setOutputCol(trainerDTO.getTargetVariablesName()[0])
                 .setInputCols(trainerDTO.getFeatureVariablesName())
