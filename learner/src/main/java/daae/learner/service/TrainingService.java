@@ -16,11 +16,15 @@ public class TrainingService {
 
     private final TrainingRepository repository;
 
+    private final AlgorithmService algorithmService;
+
     private final JobExecutorService jobExecutorService;
 
     @Autowired
-    public TrainingService(TrainingRepository repository, JobExecutorService jobExecutorService) {
+    public TrainingService(TrainingRepository repository, AlgorithmService algorithmService,
+                           JobExecutorService jobExecutorService) {
         this.repository = repository;
+        this.algorithmService = algorithmService;
         this.jobExecutorService = jobExecutorService;
     }
 
@@ -39,6 +43,11 @@ public class TrainingService {
 
         boolean hasTarget = false;
         training.setStatus(TrainingStatus.NEW.name());
+        if(training.getAlgorithm() == null) {
+            throw new PersistenceException("You must specify an algorithm to use");
+        }
+        Algorithm algorithm = algorithmService.getRepository().findById(training.getAlgorithm().getId())
+                .orElseThrow(() -> new PersistenceException("You must specify an algorithm to use"));
         if(training.getParameters().isEmpty()) {
             throw new PersistenceException("Training cannot have empty parameters");
         }
@@ -69,8 +78,9 @@ public class TrainingService {
         }
 
         Training trainingSave = repository.save(training);
-        TrainerDTO trainerDTO = trainingSave.toTrainingDTO();
 
+        TrainerDTO trainerDTO = trainingSave.toTrainingDTO();
+        trainerDTO.setAlgorithName(algorithm.getClassName());
         jobExecutorService.train(trainerDTO);
 
         return trainingSave;
