@@ -164,6 +164,7 @@ public class Training {
         trainerDTO.setDataUrl("");
         trainerDTO.setTraniningId(this.id);
         trainerDTO.setParams(new ArrayList<>());
+        trainerDTO.setAlgorithName(this.getAlgorithm().getName());
         for(AlgorithmTrainingParameter parameter: this.getParameters()) {
             trainerDTO.getParams().add(new ParamDTO(parameter.getFieldName(), parameter.getValue(),
                                 parameter.getDataType()));
