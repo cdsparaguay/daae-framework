@@ -24,7 +24,7 @@ public class JobExecutorService {
     private static final String JAVA_HOME = System.getProperty("java.home");
     private static final String SPARK_HOME = "/usr/local/spark";
 
-    Logger logger = Logger.getLogger(Model.class);
+    private Logger logger = Logger.getLogger(Model.class);
 
     @Value("${framework-jar-path}")
     private String JAR_PATH;
