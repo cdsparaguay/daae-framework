@@ -46,7 +46,7 @@ public class PredictionScheduleService {
         for(PredictionSchedule predictionSchedule: scheduleList) {
 
             try {
-                executorService.predict(predictionSchedule.getModel().toModelDTO(), )
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

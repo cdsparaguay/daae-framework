@@ -5,6 +5,7 @@ import daee.learner.framework.constants.Config;
 import daee.learner.framework.constants.JobType;
 import daee.learner.framework.dto.ModelDTO;
 import daee.learner.framework.dto.TrainerDTO;
+import daee.learner.framework.models.Model;
 import daee.learner.framework.trainers.Trainer;
 import org.apache.log4j.Logger;
 import org.apache.spark.api.java.JavaRDD;
@@ -34,19 +35,27 @@ public class JobHandler {
         String type = args[0];
         SparkSession spark = SparkSession
                 .builder()
-                .config("spark.files.useFetchCache", false)
-                .config("spark.files.overwrite", true)
                 .appName("JobHandler")
                 .getOrCreate();
+        logger.info("Job type: " + type);
+        Gson gson = new Gson();
         switch (type) {
             case JobType.TRAINING:
-                logger.info("Job type: " + JobType.TRAINING);
-                Gson gson = new Gson();
                 TrainerDTO trainerParams = gson.fromJson(args[2] , TrainerDTO.class);
                 String algorithmName = args[1];
                 Trainer trainer = (Trainer) Class.forName(algorithmName).getConstructor().newInstance();
                 ModelDTO model = trainer.train(spark, trainerParams);
                 saveModel(model);
+            case JobType.PREDICTION:
+                gson = new Gson();
+                String modelName = args[1];
+                String dataSetName = args[2];
+                String dataSetUrl = args[3];
+                ModelDTO modelParams = gson.fromJson(args[4] , ModelDTO.class);
+                Model modelToPredict = (Model) Class.forName(modelName).getConstructor().newInstance();
+                Dataset<Row> prediction = modelToPredict.predict(spark, modelParams, dataSetName, dataSetUrl);
+
+
         }
     }
 

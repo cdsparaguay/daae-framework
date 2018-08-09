@@ -1,11 +1,17 @@
 package daee.learner.framework.helper;
 
+import daee.learner.framework.constants.Config;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Encoders;
+import org.apache.spark.sql.SparkSession;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapperHelper {
 
@@ -32,6 +38,16 @@ public class MapperHelper {
             String jsonText = readAll(rd);
             return new JSONArray(jsonText);
         }
+    }
+
+    public static String getAndSaveJson(String datasetcode, String url, SparkSession sparkSession) throws IOException {
+        List<String> listToSave = new ArrayList<>();
+        String fileName = datasetcode + ".json";
+        listToSave.add(MapperHelper.readJsonFromUrl(url).toString());
+        Dataset<String> toSave = sparkSession.createDataset(listToSave, Encoders.STRING());
+        toSave.write().format("json").mode("overwrite").save(Config.HDFS_PATH+fileName);
+        return Config.HDFS_PATH+fileName;
+
     }
 
 }

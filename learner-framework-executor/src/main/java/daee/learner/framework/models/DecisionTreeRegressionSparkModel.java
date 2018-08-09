@@ -4,14 +4,16 @@ import daee.learner.framework.dto.ModelDTO;
 import org.apache.spark.ml.regression.DecisionTreeRegressionModel;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
 
 import java.io.IOException;
 
 public class DecisionTreeRegressionSparkModel extends ModelBase<DecisionTreeRegressionModel> implements Model {
     @Override
-    public Dataset<Row> predict(ModelDTO model, Dataset<Row> data) {
+    public Dataset<Row> predict(SparkSession session, ModelDTO model, String dataSetName, String dataSetUrl) {
 
         try {
+            Dataset<Row> data = getDataToPredict(session, dataSetName, dataSetUrl);
             DecisionTreeRegressionModel modelToPredict = bytesToSparkModel(model);
             return modelToPredict.transform(data);
         } catch (IOException | ClassNotFoundException e) {
