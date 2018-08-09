@@ -2,6 +2,7 @@ package daae.learner.rest;
 
 
 import com.google.common.collect.Lists;
+import daae.learner.exceptions.PersistenceException;
 import daae.learner.models.PredictionSchedule;
 import daae.learner.service.PredictionScheduleService;
 import io.swagger.annotations.Api;
@@ -10,6 +11,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.ValidationException;
 import java.util.List;
 
 @RestController
@@ -38,14 +40,19 @@ public class PredictionSchedules {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public PredictionSchedule add(@RequestBody PredictionSchedule predictionSchedule){
-        return service.getRepository().save(predictionSchedule);
+    public PredictionSchedule add(@RequestBody PredictionSchedule predictionSchedule) throws PersistenceException {
+        try {
+            return service.save(predictionSchedule);
+        } catch (PersistenceException e) {
+            throw new PersistenceException(e.getMessage());
+        }
 
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "{predictionScheduleId}")
     public void delete(@PathVariable("predictionScheduleId") Long predictionScheduleId){
-        PredictionSchedule pd = service.getRepository().findById(predictionScheduleId).orElseThrow(() -> new ResourceNotFoundException("Schedule doesn't exists"));
+        PredictionSchedule pd = service.getRepository().findById(predictionScheduleId).orElseThrow(() ->
+                new ResourceNotFoundException("Schedule doesn't exists"));
         service.getRepository().delete(pd);
     }
 }

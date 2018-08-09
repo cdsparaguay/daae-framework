@@ -1,10 +1,13 @@
 package daae.learner.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import daee.learner.framework.dto.ModelDTO;
+import daee.learner.framework.dto.TrainingVariableDTO;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,6 +30,7 @@ public class Model {
     private Training training;
 
     @OneToMany(mappedBy = "model", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<ModelVariable> modelVariables;
 
     @OneToMany(mappedBy = "model", fetch = FetchType.EAGER)
@@ -80,5 +84,23 @@ public class Model {
 
     public void setEvaluationValues(List<EvaluationValue> evaluationValues) {
         this.evaluationValues = evaluationValues;
+    }
+
+    public ModelDTO toModelDTO() {
+
+        ModelDTO modelDTO = new ModelDTO();
+
+        modelDTO.setModel(this.model);
+        modelDTO.setClass_name(this.className);
+        modelDTO.setTraining_id(this.training.getId());
+        modelDTO.setVariables(new ArrayList<>());
+        for(ModelVariable variable: this.getModelVariables()) {
+            TrainingVariableDTO variableDTO = new TrainingVariableDTO(variable.getTrainingVariable().getName(),
+                    variable.getId(), variable.getTrainingVariable().getTarget());
+            modelDTO.getVariables().add(variableDTO);
+        }
+
+        return modelDTO;
+
     }
 }

@@ -32,7 +32,7 @@ public class JobExecutor {
 
     @RequestMapping(method = RequestMethod.POST)
     public void addJob(@RequestBody TrainerDTO trainerDTO){
-        System.out.println(sparkService.addJob(trainerDTO));
+        System.out.println(sparkService.train(trainerDTO));
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)

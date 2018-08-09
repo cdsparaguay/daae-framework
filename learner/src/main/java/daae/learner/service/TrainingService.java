@@ -69,7 +69,7 @@ public class TrainingService {
         Training trainingSave = repository.save(training);
         TrainerDTO trainerDTO = trainingSave.toTrainingDTO();
 
-        jobExecutorService.addJob(trainerDTO);
+        jobExecutorService.train(trainerDTO);
 
         return trainingSave;
     }

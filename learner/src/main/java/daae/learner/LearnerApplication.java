@@ -5,6 +5,7 @@ package daae.learner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -18,6 +19,7 @@ import java.util.Collections;
 
 @SpringBootApplication
 @EnableSwagger2
+@EnableScheduling
 public class LearnerApplication {
 
 	public static void main(String[] args) {

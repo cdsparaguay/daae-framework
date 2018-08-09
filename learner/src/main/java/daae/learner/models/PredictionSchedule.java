@@ -1,10 +1,12 @@
 package daae.learner.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "prediction_schedule", schema = "public", catalog = "dengue")
@@ -38,6 +40,10 @@ public class PredictionSchedule {
     @JoinColumn(name = "model_id", nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Model model;
+
+    @OneToMany(mappedBy = "predictionSchedule", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<PredictionScheduleExecution> executions;
 
 
     public Long getId() {
@@ -107,4 +113,11 @@ public class PredictionSchedule {
         this.model = model;
     }
 
+    public List<PredictionScheduleExecution> getExecutions() {
+        return executions;
+    }
+
+    public void setExecutions(List<PredictionScheduleExecution> executions) {
+        this.executions = executions;
+    }
 }
