@@ -26,7 +26,7 @@ public class ScheduledTasks {
     }
 
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 60000)
     public void reportCurrentTime() {
 
         service.executeScheduledPredictions();

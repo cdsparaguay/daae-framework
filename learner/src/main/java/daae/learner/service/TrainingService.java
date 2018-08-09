@@ -47,19 +47,21 @@ public class TrainingService {
             parameter.setTraining(training);
         }
 
-        if(training.getVariables().size() < 2) {
+        if (training.getVariables().size() < 2) {
             throw new PersistenceException("Training must have at least two variables");
         }
 
-        for(TrainingVariable trainingVariable: training.getVariables()) {
+        for (TrainingVariable trainingVariable: training.getVariables()) {
             trainingVariable.setTraining(training);
             if(trainingVariable.getTarget()) {
                 hasTarget= true;
             }
         }
 
-        for(ValidationValue validationValue: training.getValidationValues()) {
-            validationValue.setTraining(training);
+        if (training.getValidationValues() != null) {
+            for (ValidationValue validationValue : training.getValidationValues()) {
+                validationValue.setTraining(training);
+            }
         }
 
         if(!hasTarget) {
