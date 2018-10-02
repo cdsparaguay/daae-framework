@@ -1,5 +1,6 @@
 package daee.learner.framework.trainers;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import daee.learner.framework.constants.Config;
 import daee.learner.framework.constants.DataType;
 import daee.learner.framework.dto.ModelDTO;
@@ -77,7 +78,7 @@ public abstract class TrainerBase<T> {
         return new ModelDTO(baos.toByteArray(), className, training_id, variables);
     }
 
-    Dataset<Row> getData(SparkSession sparkSession, TrainerDTO trainerDTO) throws IOException {
+    Dataset<Row> getData(SparkSession sparkSession, TrainerDTO trainerDTO) throws IOException, UnirestException {
 
         String fileName = getAndSaveJson(trainerDTO.getDataset(), trainerDTO.getDataUrl(), sparkSession);
         Dataset<Row> data = sparkSession.read().json(fileName);

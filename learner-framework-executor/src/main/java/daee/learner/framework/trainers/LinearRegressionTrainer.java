@@ -1,5 +1,6 @@
 package daee.learner.framework.trainers;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import daee.learner.framework.dto.ModelDTO;
 import daee.learner.framework.dto.TrainerDTO;
 import org.apache.spark.ml.regression.LinearRegression;
@@ -28,7 +29,7 @@ public class LinearRegressionTrainer extends TrainerBase<LinearRegression> imple
      * @throws IOException
      */
     @Override
-    public ModelDTO train(SparkSession sparkSession, TrainerDTO trainerDTO) throws IOException {
+    public ModelDTO train(SparkSession sparkSession, TrainerDTO trainerDTO) throws IOException, UnirestException {
 
         Dataset<Row> data = getData(sparkSession, trainerDTO);
         LinearRegression lr = new LinearRegression();

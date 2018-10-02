@@ -1,5 +1,6 @@
 package daee.learner.framework.trainers;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import daee.learner.framework.dto.ModelDTO;
 import daee.learner.framework.dto.TrainerDTO;
 import daee.learner.framework.models.DecisionTreeRegressionSparkModel;
@@ -18,7 +19,7 @@ import java.io.IOException;
 public class DecisionTreeTrainer extends TrainerBase<MultilayerPerceptronClassifier>
         implements Trainer {
     @Override
-    public ModelDTO train(SparkSession sparkSession, TrainerDTO trainerDTO) throws IOException {
+    public ModelDTO train(SparkSession sparkSession, TrainerDTO trainerDTO) throws IOException, UnirestException {
 
         JavaSparkContext jsc = new JavaSparkContext(sparkSession.sparkContext());
         Dataset<Row> data = getData(sparkSession, trainerDTO);

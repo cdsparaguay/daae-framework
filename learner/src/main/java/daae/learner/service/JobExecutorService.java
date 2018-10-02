@@ -34,7 +34,6 @@ public class JobExecutorService {
     public String train(TrainerDTO trainerDTO) {
         Gson gson = new Gson();
         String jsonString = gson.toJson(trainerDTO);
-
         logger.info("Args params: " + JobType.TRAINING + trainerDTO.getAlgorithName() +  jsonString);
 
         try {

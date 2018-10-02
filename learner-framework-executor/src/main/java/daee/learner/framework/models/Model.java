@@ -1,5 +1,6 @@
 package daee.learner.framework.models;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import daee.learner.framework.dto.ModelDTO;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -17,5 +18,5 @@ public interface Model {
      * @param model
      * @return
      */
-    Dataset<Row> predict(SparkSession session, ModelDTO model, String dataSetName, String dataSetUrl);
+    Dataset<Row> predict(SparkSession session, ModelDTO model, String dataSetName, String dataSetUrl) throws UnirestException;
 }

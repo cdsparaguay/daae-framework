@@ -1,5 +1,6 @@
 package daee.learner.framework.trainers;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import daee.learner.framework.dto.ModelDTO;
 import daee.learner.framework.dto.TrainerDTO;
 import org.apache.spark.api.java.JavaRDD;
@@ -27,6 +28,6 @@ public interface Trainer {
      * @return ModelDTO
      * @throws IOException
      */
-    ModelDTO train(SparkSession sparkSession, TrainerDTO trainerDTO) throws IOException;
+    ModelDTO train(SparkSession sparkSession, TrainerDTO trainerDTO) throws IOException, UnirestException;
 
 }
