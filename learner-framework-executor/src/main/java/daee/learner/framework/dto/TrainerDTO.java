@@ -16,6 +16,15 @@ public class TrainerDTO {
     private String dataUrl;
     private String algorithName;
 
+    public TrainerDTO(List<ParamDTO> params, String dataset, List<TrainingVariableDTO> variables, Long traniningId, String dataUrl, String algorithName) {
+        this.params = params;
+        this.dataset = dataset;
+        this.variables = variables;
+        this.traniningId = traniningId;
+        this.dataUrl = dataUrl;
+        this.algorithName = algorithName;
+    }
+
     public List<ParamDTO> getParams() {
         return params;
     }
