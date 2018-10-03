@@ -1,28 +1,39 @@
 package daee.learner.framework.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class TrainerDTO {
 
+    @JsonProperty
     private List<ParamDTO> params;
+    @JsonProperty
     private String dataset;
+    @JsonProperty
     private List<TrainingVariableDTO> variables;
-    private Long traniningId;
+    @JsonProperty
+    private Long trainingId;
+    @JsonProperty
     private String dataUrl;
-    private String algorithName;
+    @JsonProperty
+    private String algorithmName;
 
-    public TrainerDTO(List<ParamDTO> params, String dataset, List<TrainingVariableDTO> variables, Long traniningId, String dataUrl, String algorithName) {
+
+    @JsonCreator
+    public TrainerDTO(@JsonProperty("params") List<ParamDTO> params, @JsonProperty("dataset") String dataset,
+                      @JsonProperty("variables") List<TrainingVariableDTO> variables,
+                      @JsonProperty("trainingId") Long trainingId, @JsonProperty("dataUrl") String dataUrl,
+                      @JsonProperty("algorithmName") String algorithmName) {
         this.params = params;
         this.dataset = dataset;
         this.variables = variables;
-        this.traniningId = traniningId;
+        this.trainingId = trainingId;
         this.dataUrl = dataUrl;
-        this.algorithName = algorithName;
+        this.algorithmName = algorithmName;
     }
 
     public List<ParamDTO> getParams() {
@@ -49,19 +60,19 @@ public class TrainerDTO {
         this.variables = variables;
     }
 
-    public Long getTraniningId() {
-        return traniningId;
+    public Long getTrainingId() {
+        return trainingId;
     }
 
-    public void setTraniningId(Long traniningId) {
-        this.traniningId = traniningId;
+    public void setTrainingId(Long trainingId) {
+        this.trainingId = trainingId;
     }
 
     @JsonIgnore
     public String[] getTargetVariablesName() {
         List<String> toRet = new ArrayList<>();
         for (TrainingVariableDTO trainingVariableDTO: this.getVariables()) {
-            if(trainingVariableDTO.getTarget()) {
+            if(trainingVariableDTO.isTarget()) {
                 toRet.add(trainingVariableDTO.getName());
             }
         }
@@ -72,7 +83,7 @@ public class TrainerDTO {
     public String[] getFeatureVariablesName() {
         List<String> toRet = new ArrayList<>();
         for (TrainingVariableDTO trainingVariableDTO: this.getVariables()) {
-            if(!trainingVariableDTO.getTarget()) {
+            if(!trainingVariableDTO.isTarget()) {
                 toRet.add(trainingVariableDTO.getName());
             }
         }
@@ -87,11 +98,11 @@ public class TrainerDTO {
         this.dataUrl = dataUrl;
     }
 
-    public String getAlgorithName() {
-        return algorithName;
+    public String getAlgorithmName() {
+        return algorithmName;
     }
 
-    public void setAlgorithName(String algorithName) {
-        this.algorithName = algorithName;
+    public void setAlgorithmName(String algorithmName) {
+        this.algorithmName = algorithmName;
     }
 }

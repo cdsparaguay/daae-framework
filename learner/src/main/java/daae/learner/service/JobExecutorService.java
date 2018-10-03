@@ -34,7 +34,7 @@ public class JobExecutorService {
     public String train(TrainerDTO trainerDTO) {
         Gson gson = new Gson();
         String jsonString = gson.toJson(trainerDTO);
-        logger.info("Args params: " + JobType.TRAINING + trainerDTO.getAlgorithName() +  jsonString);
+        logger.info("Args params: " + JobType.TRAINING + trainerDTO.getAlgorithmName() +  jsonString);
 
         try {
             new SparkLauncher()
@@ -42,7 +42,7 @@ public class JobExecutorService {
                     .setJavaHome(JAVA_HOME)
                     .setAppResource(JAR_PATH)
                     .setMainClass(JobHandler.class.getName())
-                    .addAppArgs(JobType.TRAINING, trainerDTO.getAlgorithName(), jsonString)
+                    .addAppArgs(JobType.TRAINING, trainerDTO.getAlgorithmName(), jsonString)
                     .setMaster(MASTER)
                     .setAppName("EXAMPLE")
                     .setDeployMode("cluster")

@@ -80,7 +80,7 @@ public class TrainingService {
         Training trainingSave = repository.save(training);
 
         TrainerDTO trainerDTO = trainingSave.toTrainingDTO();
-        trainerDTO.setAlgorithName(algorithm.getClassName());
+        trainerDTO.setAlgorithmName(algorithm.getClassName());
         jobExecutorService.train(trainerDTO);
 
         return trainingSave;

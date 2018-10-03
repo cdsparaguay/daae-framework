@@ -1,15 +1,17 @@
 package daee.learner.framework.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TrainingVariableDTO {
 
     private String name;
     private Long id;
-    private Boolean target;
+    private boolean target;
 
     @JsonCreator
-    public TrainingVariableDTO(String name, Long id, Boolean target) {
+    public TrainingVariableDTO(@JsonProperty("name") String name, @JsonProperty("id") Long id,
+                               @JsonProperty("target") boolean target) {
         this.name = name;
         this.id = id;
         this.target = target;
@@ -31,11 +33,11 @@ public class TrainingVariableDTO {
         this.id = id;
     }
 
-    public Boolean getTarget() {
+    public boolean isTarget() {
         return target;
     }
 
-    public void setTarget(Boolean target) {
+    public void setTarget(boolean target) {
         this.target = target;
     }
 }

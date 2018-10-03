@@ -13,7 +13,6 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
-import javax.management.MalformedObjectNameException;
 import java.io.IOException;
 
 public class DecisionTreeTrainer extends TrainerBase<MultilayerPerceptronClassifier>
@@ -43,6 +42,6 @@ public class DecisionTreeTrainer extends TrainerBase<MultilayerPerceptronClassif
         logger.info("Learned regression tree model:\n" + model.toDebugString());
 
         return sparkModelToDTO(model, DecisionTreeRegressionSparkModel.class.getName(),
-                trainerDTO.getTraniningId(), trainerDTO.getVariables());
+                trainerDTO.getTrainingId(), trainerDTO.getVariables());
     }
 }

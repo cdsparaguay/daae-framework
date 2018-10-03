@@ -30,7 +30,7 @@ public class JobExecutor {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
     public void addJob(@RequestBody TrainerDTO trainerDTO){
         System.out.println(sparkService.train(trainerDTO));
     }

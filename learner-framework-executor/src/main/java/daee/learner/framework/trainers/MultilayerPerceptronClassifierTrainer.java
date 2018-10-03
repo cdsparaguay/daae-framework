@@ -6,10 +6,8 @@ import daee.learner.framework.dto.TrainerDTO;
 import daee.learner.framework.dto.TrainingVariableDTO;
 import daee.learner.framework.helper.MapperHelper;
 import org.apache.spark.SparkFiles;
-import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.ml.classification.MultilayerPerceptronClassificationModel;
 import org.apache.spark.ml.classification.MultilayerPerceptronClassifier;
-import org.apache.spark.mllib.regression.LabeledPoint;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
@@ -33,8 +31,8 @@ public class MultilayerPerceptronClassifierTrainer extends TrainerBase<Multilaye
         setValues(trainer, trainerDTO.getParams());
         MultilayerPerceptronClassificationModel model = trainer.fit(train);
         ModelDTO modelDTO = sparkModelToDTO(model, MultilayerPerceptronClassificationModel.class.getName(),
-                trainerDTO.getTraniningId(), trainerDTO.getVariables());
-        modelDTO.setTraining_id(trainerDTO.getTraniningId());
+                trainerDTO.getTrainingId(), trainerDTO.getVariables());
+        modelDTO.setTraining_id(trainerDTO.getTrainingId());
         modelDTO.setVariables(new ArrayList<>());
         for(TrainingVariableDTO variableDTO: trainerDTO.getVariables()) {
             modelDTO.getVariables().add(variableDTO);
