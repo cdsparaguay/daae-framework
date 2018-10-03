@@ -14,7 +14,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
@@ -23,8 +23,6 @@ spring:
 logging:
   pattern:
     console: "%d %-5level %logger : %msg%n"
-  level:
-    org.springframework: INFO
 flyway:
   enabled: true
 framework-jar-path: hdfs://namenode:8020/user/yolile/learner-framework-executor-1.0-SNAPSHOT-jar-with-dependencies.jar
