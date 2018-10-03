@@ -159,17 +159,14 @@ public class Training {
 
     public TrainerDTO toTrainingDTO () {
 
-        TrainerDTO trainerDTO = new TrainerDTO();
-        trainerDTO.setDataset(this.datasetCode);
-        trainerDTO.setDataUrl("");
-        trainerDTO.setTraniningId(this.id);
-        trainerDTO.setParams(new ArrayList<>());
-        trainerDTO.setAlgorithName(this.getAlgorithm().getName());
+        TrainerDTO trainerDTO = new TrainerDTO(new ArrayList<>(), this.datasetCode, new ArrayList<>(),
+                this.id, "", this.getAlgorithm().getName());
+
         for(AlgorithmTrainingParameter parameter: this.getParameters()) {
             trainerDTO.getParams().add(new ParamDTO(parameter.getFieldName(), parameter.getValue(),
                                 parameter.getDataType()));
         }
-        trainerDTO.setVariables(new ArrayList<>());
+
         for(TrainingVariable variable: this.getVariables()) {
             trainerDTO.getVariables().add(new TrainingVariableDTO(variable.getName(), variable.getId(),
                     variable.getTarget()));
