@@ -4,5 +4,6 @@ public enum TrainingStatus {
     NEW,
     CANCELED,
     COMPLETED,
-    TRAINING
+    TRAINING,
+    FAILED
 }

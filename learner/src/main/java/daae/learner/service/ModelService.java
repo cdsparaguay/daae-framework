@@ -1,9 +1,6 @@
 package daae.learner.service;
 
-import daae.learner.models.Model;
-import daae.learner.models.ModelVariable;
-import daae.learner.models.Training;
-import daae.learner.models.TrainingVariable;
+import daae.learner.models.*;
 import daae.learner.repository.ModelRepository;
 import daee.learner.framework.dto.ModelDTO;
 import daee.learner.framework.dto.TrainingVariableDTO;
@@ -48,6 +45,8 @@ public class ModelService {
         trainingService.completeTraining(training);
         newModel.setTraining(training);
         newModel.setModelVariables(new ArrayList<>());
+        newModel.setPredictions(Prediction.toPrediction(toSave.getPredicteds(), training, newModel,
+                toSave.getInitialDate()));
         for (TrainingVariableDTO variableDTO: toSave.getVariables()) {
             TrainingVariable variable = new TrainingVariable();
             variable.setId(variableDTO.getId());

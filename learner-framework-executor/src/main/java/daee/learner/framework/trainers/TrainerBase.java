@@ -3,23 +3,21 @@ package daee.learner.framework.trainers;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import daee.learner.framework.constants.Config;
 import daee.learner.framework.constants.DataType;
-import daee.learner.framework.dto.ModelDTO;
-import daee.learner.framework.dto.ParamDTO;
-import daee.learner.framework.dto.TrainerDTO;
-import daee.learner.framework.dto.TrainingVariableDTO;
-import daee.learner.framework.helper.MapperHelper;
+import daee.learner.framework.dto.*;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.apache.spark.ml.Model;
 import org.apache.spark.ml.feature.VectorAssembler;
 import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.functions;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static daee.learner.framework.helper.MapperHelper.getAndSaveJson;
@@ -69,23 +67,38 @@ public abstract class TrainerBase<T> {
         }
     }
 
-    ModelDTO sparkModelToDTO(Model model, String className, Long training_id, List<TrainingVariableDTO> variables) throws IOException {
+    ModelDTO sparkModelToDTO(Model model, String className, Long training_id, List<TrainingVariableDTO> variables,
+                             String evaluationResult, String evaluationName, List<Predicted> predicteds,
+                             Date initialDate) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(model);
         oos.flush();
         oos.close();
-        return new ModelDTO(baos.toByteArray(), className, training_id, variables);
+        return new ModelDTO(baos.toByteArray(), className, training_id, variables, evaluationResult,
+                evaluationName, predicteds, initialDate);
     }
 
     Dataset<Row> getData(SparkSession sparkSession, TrainerDTO trainerDTO) throws IOException, UnirestException {
 
-        String fileName = getAndSaveJson(trainerDTO.getDataset(), trainerDTO.getDataUrl(), sparkSession);
-        Dataset<Row> data = sparkSession.read().json(fileName);
+
+        trainerDTO.setDataUrl(Config.DATA_URL + trainerDTO.getDataset());
+        Dataset<String> data1 = getAndSaveJson(trainerDTO.getDataset(), trainerDTO.getDataUrl(), sparkSession);
+        Dataset<Row> data = sparkSession.read().json(data1);
         data.persist();
-        data = data.select("value");
+        data.cache();
+        logger.info("DATA " + data.head());
+        logger.info("COUNT  " + data.count());
+        for(String field: data.columns()) {
+            logger.info("Field " + field);
+        }
+
+        for(String name: trainerDTO.getFeatureVariablesName()) {
+            data = data.withColumn(name, functions.rint(name));
+        }
+
         return new VectorAssembler()
-                .setOutputCol(trainerDTO.getTargetVariablesName()[0])
+                .setOutputCol("features")
                 .setInputCols(trainerDTO.getFeatureVariablesName())
                 .transform(data);
 

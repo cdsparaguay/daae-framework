@@ -1,6 +1,11 @@
 package daee.learner.framework;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import daee.learner.framework.constants.Config;
 import daee.learner.framework.constants.JobType;
 import daee.learner.framework.dto.ModelDTO;
@@ -20,7 +25,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Properties;
 
 public class JobHandler {
@@ -43,9 +52,11 @@ public class JobHandler {
             case JobType.TRAINING:
                 TrainerDTO trainerParams = gson.fromJson(args[2] , TrainerDTO.class);
                 String algorithmName = args[1];
-                Trainer trainer = (Trainer) Class.forName(algorithmName).getConstructor().newInstance();
+                Trainer trainer = (Trainer) Class.forName("daee.learner.framework.trainers."+algorithmName).getConstructor().newInstance();
                 ModelDTO model = trainer.train(spark, trainerParams);
+                model.setInitialDate(trainerParams.getInitialDate());
                 saveModel(model);
+                break;
             case JobType.PREDICTION:
                 gson = new Gson();
                 String modelName = args[1];
@@ -54,6 +65,7 @@ public class JobHandler {
                 ModelDTO modelParams = gson.fromJson(args[4] , ModelDTO.class);
                 Model modelToPredict = (Model) Class.forName(modelName).getConstructor().newInstance();
                 Dataset<Row> prediction = modelToPredict.predict(spark, modelParams, dataSetName, dataSetUrl);
+                break;
 
 
         }
@@ -74,24 +86,16 @@ public class JobHandler {
 
         }
 
-        private static void saveModel(ModelDTO modelDTO) {
-            URL url;
-            try {
-                url = new URL(Config.SERVICE_URL+"models/add");
+        private static void saveModel(ModelDTO modelDTO) throws UnirestException {
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
-                HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-            connection.setDoOutput(true);
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
-            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-            out.write(modelDTO.toString());
-            out.close();
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            logger.info("Save successful");
-            } catch (IOException e) {
-                logger.error(e);
-            }
+           // Gson gson = new Gson();
+            logger.info("DATA MODEL GENERATED " + modelDTO.toString());
+            HttpResponse<String> jsonResponse = Unirest.post(Config.SERVICE_URL+"models")
+                    .header("accept", "application/json")
+                    .header("Content-Type", "application/json")
+                    .body(gson.toJson(modelDTO)).asString();
+            logger.info(jsonResponse.getBody());
         }
 }

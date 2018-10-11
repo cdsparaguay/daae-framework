@@ -31,7 +31,7 @@ public class MultilayerPerceptronClassifierTrainer extends TrainerBase<Multilaye
         setValues(trainer, trainerDTO.getParams());
         MultilayerPerceptronClassificationModel model = trainer.fit(train);
         ModelDTO modelDTO = sparkModelToDTO(model, MultilayerPerceptronClassificationModel.class.getName(),
-                trainerDTO.getTrainingId(), trainerDTO.getVariables());
+                trainerDTO.getTrainingId(), trainerDTO.getVariables(), null, null, null, null);
         modelDTO.setTraining_id(trainerDTO.getTrainingId());
         modelDTO.setVariables(new ArrayList<>());
         for(TrainingVariableDTO variableDTO: trainerDTO.getVariables()) {

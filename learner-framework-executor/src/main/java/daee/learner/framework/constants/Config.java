@@ -14,6 +14,7 @@ public class Config {
     public static final String DB_PASS =  properties.getProperty("dbpassword");
     public static final String HDFS_PATH =  properties.getProperty("hdfs-url");
     public static final String SERVICE_URL =  properties.getProperty("service-url");
+    public static final String DATA_URL =  properties.getProperty("data-url");
 
     private static Properties readPropertiesFile()
     {

@@ -48,7 +48,7 @@ public class LinearRegressionTrainer extends TrainerBase<LinearRegression> imple
         logger.info("r2: " + trainingSummary.r2());
 
         return sparkModelToDTO(lrModel, LinearRegressionModel.class.getName(), trainerDTO.getTrainingId(),
-                trainerDTO.getVariables());
+                trainerDTO.getVariables(), null, null, null, null);
 
     }
 }

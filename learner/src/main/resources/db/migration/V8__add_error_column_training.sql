@@ -1,0 +1,1 @@
+ALTER table training add column errors character varying(600);

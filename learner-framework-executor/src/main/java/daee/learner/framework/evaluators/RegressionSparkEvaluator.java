@@ -11,10 +11,10 @@ import java.util.Map;
 
 public class RegressionSparkEvaluator implements Evaluator{
     @Override
-    public Map<String, Object> evaluate(Dataset<Row> dataset, List<TrainingVariableDTO> variables) {
+    public Map<String, Object> evaluate(Dataset<Row> dataset, String realName, String predictedName) {
         RegressionEvaluator evaluator = new RegressionEvaluator()
-                .setLabelCol("label")
-                .setPredictionCol("prediction")
+                .setLabelCol(realName)
+                .setPredictionCol(predictedName)
                 .setMetricName("rmse");
         double rmse = evaluator.evaluate(dataset);
         Map<String, Object> aRet = new HashMap<>();

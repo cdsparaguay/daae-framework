@@ -17,10 +17,9 @@ public interface Evaluator {
      * implementado
      * @param dataset:
      *               conjunto de datos predichos y esperados
-     * @param variables:
-     *                 nombre de las variables
+     *
      * @return
      */
-    Map<String, Object> evaluate(Dataset<Row> dataset, List<TrainingVariableDTO> variables);
+    Map<String, Object> evaluate(Dataset<Row> dataset, String realName, String predictedName);
 
 }

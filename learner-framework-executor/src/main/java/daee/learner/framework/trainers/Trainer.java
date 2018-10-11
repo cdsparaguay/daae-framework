@@ -12,6 +12,7 @@ import org.apache.spark.sql.SparkSession;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Interfaz fase para la implementación de algoritmos de entrenamiento
@@ -28,6 +29,6 @@ public interface Trainer {
      * @return ModelDTO
      * @throws IOException
      */
-    ModelDTO train(SparkSession sparkSession, TrainerDTO trainerDTO) throws IOException, UnirestException;
+    ModelDTO train(SparkSession sparkSession, TrainerDTO trainerDTO) throws IOException, UnirestException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException;
 
 }

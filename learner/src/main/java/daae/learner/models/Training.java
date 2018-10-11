@@ -8,6 +8,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,15 +46,23 @@ public class Training {
     @Basic
     @Column(name = "status", nullable = false, length = 50)
     private String status;
+    @Basic
+    @Column(name = "errors")
+    private String errors;
     @OneToMany(mappedBy = "training", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<AlgorithmTrainingParameter> parameters;
     @OneToMany(mappedBy = "training", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<TrainingVariable> variables;
-    @OneToMany(mappedBy = "training", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Fetch(value = FetchMode.SUBSELECT)
-    private List<ValidationValue> validationValues;
+
+    @Transient
+    private String evaluationAlgorithmName;
+
+    @Transient
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date initialDate;
+
 
 
     public Long getId() {
@@ -149,18 +158,12 @@ public class Training {
         this.variables = variables;
     }
 
-    public List<ValidationValue> getValidationValues() {
-        return validationValues;
-    }
-
-    public void setValidationValues(List<ValidationValue> validationValues) {
-        this.validationValues = validationValues;
-    }
 
     public TrainerDTO toTrainingDTO () {
 
         TrainerDTO trainerDTO = new TrainerDTO(new ArrayList<>(), this.datasetCode, new ArrayList<>(),
-                this.id, "", this.getAlgorithm().getName());
+                this.id, "", this.getAlgorithm().getName(), this.evaluationAlgorithmName,
+                this.getInitialDate());
 
         for(AlgorithmTrainingParameter parameter: this.getParameters()) {
             trainerDTO.getParams().add(new ParamDTO(parameter.getFieldName(), parameter.getValue(),
@@ -174,5 +177,29 @@ public class Training {
 
         return trainerDTO;
 
+    }
+
+    public String getEvaluationAlgorithmName() {
+        return evaluationAlgorithmName;
+    }
+
+    public void setEvaluationAlgorithmName(String evaluationAlgorithmName) {
+        this.evaluationAlgorithmName = evaluationAlgorithmName;
+    }
+
+    public String getErrors() {
+        return errors;
+    }
+
+    public Date getInitialDate() {
+        return initialDate;
+    }
+
+    public void setInitialDate(Date initialDate) {
+        this.initialDate = initialDate;
+    }
+
+    public void setErrors(String errors) {
+        this.errors = errors;
     }
 }

@@ -32,6 +32,20 @@ public class TrainingService {
         return repository.findAllByStatus(status.name());
     }
 
+    public Training setErrorsAndStatus(Long trainingId, String errors) {
+
+        Training training = repository.findById(trainingId).get();
+        if(errors == null) {
+            training.setStatus(TrainingStatus.COMPLETED.name());
+        } else {
+            training.setStatus(TrainingStatus.FAILED.name());
+            training.setErrors(errors);
+
+        }
+        training.setEndDate(new Date());
+        return repository.save(training);
+    }
+
     public Training completeTraining(Training training) {
         training.setStatus(TrainingStatus.COMPLETED.name());
         training.setEndDate(new Date());
@@ -67,11 +81,6 @@ public class TrainingService {
             }
         }
 
-        if (training.getValidationValues() != null) {
-            for (ValidationValue validationValue : training.getValidationValues()) {
-                validationValue.setTraining(training);
-            }
-        }
 
         if(!hasTarget) {
             throw new PersistenceException("Training must have at least one target variables");

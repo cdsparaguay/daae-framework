@@ -2,11 +2,8 @@ package daee.learner.framework.models;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import daee.learner.framework.dto.ModelDTO;
-import daee.learner.framework.dto.TrainerDTO;
 import org.apache.log4j.Logger;
-import org.apache.spark.ml.feature.VectorAssembler;
 import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
 import java.io.ByteArrayInputStream;
@@ -40,12 +37,8 @@ public abstract class ModelBase<T> {
         }
     }
 
-    Dataset<Row> getDataToPredict(SparkSession sparkSession, String dataSetCode, String dataSetUrl) throws IOException, UnirestException {
+    Dataset<String> getDataToPredict(SparkSession sparkSession, String dataSetCode, String dataSetUrl) throws IOException, UnirestException {
 
-        String fileName = getAndSaveJson(dataSetCode, dataSetUrl, sparkSession);
-        Dataset<Row> data = sparkSession.read().json(fileName);
-        data.persist();
-        data = data.select("value");
-        return data;
+        return getAndSaveJson(dataSetCode, dataSetUrl, sparkSession);
     }
 }

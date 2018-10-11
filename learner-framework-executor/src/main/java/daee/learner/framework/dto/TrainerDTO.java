@@ -1,10 +1,12 @@
 package daee.learner.framework.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TrainerDTO {
@@ -21,19 +23,27 @@ public class TrainerDTO {
     private String dataUrl;
     @JsonProperty
     private String algorithmName;
+    @JsonProperty
+    private String evaluatorName;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date initialDate;
 
 
     @JsonCreator
     public TrainerDTO(@JsonProperty("params") List<ParamDTO> params, @JsonProperty("dataset") String dataset,
                       @JsonProperty("variables") List<TrainingVariableDTO> variables,
                       @JsonProperty("trainingId") Long trainingId, @JsonProperty("dataUrl") String dataUrl,
-                      @JsonProperty("algorithmName") String algorithmName) {
+                      @JsonProperty("algorithmName") String algorithmName,
+                      @JsonProperty("evaluatorName") String evaluatorName,
+                      @JsonProperty("initialDate") Date initialDate) {
         this.params = params;
         this.dataset = dataset;
         this.variables = variables;
         this.trainingId = trainingId;
         this.dataUrl = dataUrl;
         this.algorithmName = algorithmName;
+        this.evaluatorName = evaluatorName;
+        this.initialDate = initialDate;
     }
 
     public List<ParamDTO> getParams() {
@@ -104,5 +114,21 @@ public class TrainerDTO {
 
     public void setAlgorithmName(String algorithmName) {
         this.algorithmName = algorithmName;
+    }
+
+    public String getEvaluatorName() {
+        return evaluatorName;
+    }
+
+    public void setEvaluatorName(String evaluatorName) {
+        this.evaluatorName = evaluatorName;
+    }
+
+    public Date getInitialDate() {
+        return initialDate;
+    }
+
+    public void setInitialDate(Date initialDate) {
+        this.initialDate = initialDate;
     }
 }

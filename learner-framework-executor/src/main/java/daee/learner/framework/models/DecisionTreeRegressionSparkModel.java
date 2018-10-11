@@ -14,7 +14,7 @@ public class DecisionTreeRegressionSparkModel extends ModelBase<DecisionTreeRegr
     public Dataset<Row> predict(SparkSession session, ModelDTO model, String dataSetName, String dataSetUrl) throws UnirestException {
 
         try {
-            Dataset<Row> data = getDataToPredict(session, dataSetName, dataSetUrl);
+            Dataset<String> data = getDataToPredict(session, dataSetName, dataSetUrl);
             DecisionTreeRegressionModel modelToPredict = bytesToSparkModel(model);
             return modelToPredict.transform(data);
         } catch (IOException | ClassNotFoundException e) {
