@@ -11,18 +11,19 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import javax.ws.rs.BadRequestException;
 import java.util.ArrayList;
-import java.util.Date;
 
 @Service
 public class ModelService {
 
     private final ModelRepository repository;
     private final TrainingService trainingService;
+    private final ProcedureService procedureService;
 
     @Autowired
-    public ModelService(ModelRepository repository, TrainingService trainingService) {
+    public ModelService(ModelRepository repository, TrainingService trainingService, ProcedureService procedureService) {
         this.repository = repository;
         this.trainingService = trainingService;
+        this.procedureService = procedureService;
     }
 
     /**
@@ -45,7 +46,6 @@ public class ModelService {
                 .orElseThrow(() -> new ResourceNotFoundException("Training doesn't exists"));
         trainingService.completeTraining(training);
         newModel.setTraining(training);
-        newModel.setModelVariables(new ArrayList<>());
         newModel.setPredictions(Prediction.toPrediction(toSave.getPredicteds(), training, newModel,
                 toSave.getInitialDate()));
         for (TrainingVariableDTO variableDTO: toSave.getVariables()) {
@@ -53,6 +53,15 @@ public class ModelService {
             variable.setId(variableDTO.getId());
             newModel.getModelVariables().add(new ModelVariable(newModel, variable));
         }
+
+        EvaluationValue evaluationValue = new EvaluationValue();
+        evaluationValue.setModel(newModel);
+        evaluationValue.setProcedure(procedureService.getRepository()
+                .findByClassName(toSave.getEvaluationName()));
+        evaluationValue.setValue(toSave.getEvaluationResult());
+
+        newModel.setEvaluationValues(new ArrayList<>());
+        newModel.getEvaluationValues().add(evaluationValue);
 
         return repository.save(newModel);
 

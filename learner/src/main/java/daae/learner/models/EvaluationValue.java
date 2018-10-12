@@ -52,11 +52,11 @@ public class EvaluationValue {
         this.model = model;
     }
 
-    public Procedure getProcedureId() {
+    public Procedure getProcedure() {
         return procedure;
     }
 
-    public void setProcedureId(Procedure procedureId) {
+    public void setProcedure(Procedure procedure) {
         this.procedure = procedure;
     }
 

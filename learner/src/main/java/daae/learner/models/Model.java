@@ -30,11 +30,11 @@ public class Model {
     @JsonIgnore
     private Training training;
 
-    @OneToMany(mappedBy = "model", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "model", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<ModelVariable> modelVariables;
 
-    @OneToMany(mappedBy = "model", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "model", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<EvaluationValue> evaluationValues;
 

@@ -9,4 +9,5 @@ public interface ProcedureRepository extends CrudRepository<Procedure, Long>  {
 
     List<Procedure> findAllByType(String type);
     List<Procedure> findAllByTarget(String target);
+    Procedure findByClassName(String className);
 }
