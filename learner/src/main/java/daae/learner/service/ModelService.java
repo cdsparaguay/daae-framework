@@ -48,6 +48,7 @@ public class ModelService {
         newModel.setTraining(training);
         newModel.setPredictions(Prediction.toPrediction(toSave.getPredicteds(), training, newModel,
                 toSave.getInitialDate()));
+        newModel.setModelVariables(new ArrayList<>());
         for (TrainingVariableDTO variableDTO: toSave.getVariables()) {
             TrainingVariable variable = new TrainingVariable();
             variable.setId(variableDTO.getId());
