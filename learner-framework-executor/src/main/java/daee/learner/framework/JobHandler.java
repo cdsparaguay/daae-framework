@@ -54,7 +54,6 @@ public class JobHandler {
                 String algorithmName = args[1];
                 Trainer trainer = (Trainer) Class.forName("daee.learner.framework.trainers."+algorithmName).getConstructor().newInstance();
                 ModelDTO model = trainer.train(spark, trainerParams);
-                model.setInitialDate(trainerParams.getInitialDate());
                 saveModel(model);
                 break;
             case JobType.PREDICTION:
@@ -90,12 +89,12 @@ public class JobHandler {
             Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
-           // Gson gson = new Gson();
+        //    Gson gson = new Gson();
             logger.info("DATA MODEL GENERATED " + modelDTO.toString());
-            HttpResponse<String> jsonResponse = Unirest.post(Config.SERVICE_URL+"models")
+            HttpResponse<JsonNode> jsonResponse = Unirest.post(Config.SERVICE_URL+"models")
                     .header("accept", "application/json")
                     .header("Content-Type", "application/json")
-                    .body(gson.toJson(modelDTO)).asString();
+                    .body(gson.toJson(modelDTO)).asJson();
             logger.info(jsonResponse.getBody());
         }
 }

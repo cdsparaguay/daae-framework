@@ -5,6 +5,7 @@ import daee.learner.framework.dto.ModelDTO;
 import daee.learner.framework.dto.TrainingVariableDTO;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import scala.tools.cmd.gen.AnyVals;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class Model {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<EvaluationValue> evaluationValues;
 
-    @OneToMany(mappedBy = "model", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "model", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Prediction> predictions;
 

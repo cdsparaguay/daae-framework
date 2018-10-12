@@ -1,5 +1,7 @@
 package daae.learner.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import daee.learner.framework.dto.Predicted;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -32,12 +34,15 @@ public class Prediction {
     private String dataSetCode;
     @Basic
     @Column(name = "date", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;
     @ManyToOne
     @JoinColumn(name = "model_id", nullable = false)
+    @JsonIgnore
     private Model model;
     @Basic
     @Column(name = "for_date", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date forDate;
 
     @OneToMany(mappedBy = "prediction", fetch = FetchType.EAGER)

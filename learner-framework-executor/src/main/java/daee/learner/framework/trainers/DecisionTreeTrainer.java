@@ -6,7 +6,6 @@ import daee.learner.framework.dto.Predicted;
 import daee.learner.framework.dto.TrainerDTO;
 import daee.learner.framework.evaluators.RegressionSparkEvaluator;
 import daee.learner.framework.models.DecisionTreeRegressionSparkModel;
-import org.apache.spark.ml.classification.MultilayerPerceptronClassifier;
 import org.apache.spark.ml.regression.DecisionTreeRegressionModel;
 import org.apache.spark.ml.regression.DecisionTreeRegressor;
 import org.apache.spark.sql.Dataset;
@@ -20,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class DecisionTreeTrainer extends TrainerBase<MultilayerPerceptronClassifier>
+public class DecisionTreeTrainer extends TrainerBase<DecisionTreeRegressor>
         implements Trainer {
     @Override
     public ModelDTO train(SparkSession sparkSession, TrainerDTO trainerDTO) throws IOException, UnirestException,
@@ -34,7 +33,7 @@ public class DecisionTreeTrainer extends TrainerBase<MultilayerPerceptronClassif
         DecisionTreeRegressor dt = new DecisionTreeRegressor()
                 .setFeaturesCol("features")
                 .setPredictionCol(trainerDTO.getTargetVariablesName()[0]);
-
+        setValues(dt, trainerDTO.getParams());
         DecisionTreeRegressionModel model = dt.train(data);
         // Make predictions.
         Dataset<Row> predictions = model.transform(data);
