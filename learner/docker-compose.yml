@@ -51,8 +51,6 @@ services:
     container_name: spark-master
     ports:
       - 6060:8080
-      - 7077:7077
-      - 6066:6066
     env_file:
       - ./hadoop.env
   spark-worker:
