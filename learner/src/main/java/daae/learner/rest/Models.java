@@ -7,10 +7,7 @@ import daae.learner.service.ModelService;
 import daee.learner.framework.dto.ModelDTO;
 import io.swagger.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -35,5 +32,10 @@ public class Models {
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
     public List<Model> getModels(){
         return Lists.newArrayList(service.getRepository().findAll());
+    }
+
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON, path = "/training/{trainingId}")
+    public List<Model> getModelsByTraining(@PathVariable(value = "trainingId")  Long trainingId){
+        return Lists.newArrayList(service.getRepository().findAllByTrainingId(trainingId));
     }
 }

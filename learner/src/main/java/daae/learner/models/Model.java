@@ -38,10 +38,6 @@ public class Model {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<EvaluationValue> evaluationValues;
 
-    @OneToMany(mappedBy = "model", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Fetch(value = FetchMode.SUBSELECT)
-    private List<Prediction> predictions;
-
 
     public Long getId() {
         return id;
@@ -107,13 +103,5 @@ public class Model {
 
         return modelDTO;
 
-    }
-
-    public List<Prediction> getPredictions() {
-        return predictions;
-    }
-
-    public void setPredictions(List<Prediction> predictions) {
-        this.predictions = predictions;
     }
 }

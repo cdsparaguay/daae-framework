@@ -19,7 +19,7 @@ public class EvaluationValue {
     private String value;
 
     @ManyToOne
-    @JoinColumn(name="model_id")
+    @JoinColumn(name = "model_id", nullable = false)
     @JsonIgnore
     private Model model;
 
@@ -48,7 +48,7 @@ public class EvaluationValue {
         return model;
     }
 
-    public void setModel(Model modelId) {
+    public void setModel(Model model) {
         this.model = model;
     }
 

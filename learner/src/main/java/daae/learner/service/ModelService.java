@@ -2,6 +2,7 @@ package daae.learner.service;
 
 import daae.learner.models.*;
 import daae.learner.repository.ModelRepository;
+import daae.learner.repository.PredictionRepository;
 import daee.learner.framework.dto.ModelDTO;
 import daee.learner.framework.dto.TrainingVariableDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,14 @@ public class ModelService {
     private final ModelRepository repository;
     private final TrainingService trainingService;
     private final ProcedureService procedureService;
+    private final PredictionRepository predictionService;
 
     @Autowired
-    public ModelService(ModelRepository repository, TrainingService trainingService, ProcedureService procedureService) {
+    public ModelService(ModelRepository repository, TrainingService trainingService, ProcedureService procedureService, PredictionRepository predictionService) {
         this.repository = repository;
         this.trainingService = trainingService;
         this.procedureService = procedureService;
+        this.predictionService = predictionService;
     }
 
     /**
@@ -46,8 +49,7 @@ public class ModelService {
                 .orElseThrow(() -> new ResourceNotFoundException("Training doesn't exists"));
         trainingService.completeTraining(training);
         newModel.setTraining(training);
-        newModel.setPredictions(Prediction.toPrediction(toSave.getPredicteds(), training, newModel,
-                toSave.getInitialDate()));
+
         newModel.setModelVariables(new ArrayList<>());
         for (TrainingVariableDTO variableDTO: toSave.getVariables()) {
             TrainingVariable variable = new TrainingVariable();
@@ -64,7 +66,16 @@ public class ModelService {
         newModel.setEvaluationValues(new ArrayList<>());
         newModel.getEvaluationValues().add(evaluationValue);
 
-        return repository.save(newModel);
+        Model modelSaved = repository.save(newModel);
+
+        for(Prediction prediction: Prediction.toPrediction(toSave.getPredicteds(), training, newModel,
+                toSave.getInitialDate())) {
+
+            prediction.setModel(modelSaved);
+            predictionService.save(prediction);
+        }
+
+        return modelSaved;
 
     }
 

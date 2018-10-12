@@ -34,6 +34,7 @@ public class DecisionTreeTrainer extends TrainerBase<DecisionTreeRegressor>
                 .setFeaturesCol("features")
                 .setPredictionCol(trainerDTO.getTargetVariablesName()[0]);
         setValues(dt, trainerDTO.getParams());
+
         DecisionTreeRegressionModel model = dt.train(data);
         // Make predictions.
         Dataset<Row> predictions = model.transform(data);
